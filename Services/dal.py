@@ -3,7 +3,8 @@ from typing import List, Optional, Dict, Any
 from Services.config import settings
 
 class DataLoaderDAL:
-    def _init_(self) -> None:
+    def __init__(self) -> None:  # fixed dunder name
+        # Lazily initialize pool so missing env vars raise early with clear error
         self.pool = MySQLConnectionPool(
             pool_name=settings.POOL_NAME,
             pool_size=settings.POOL_SIZE,
