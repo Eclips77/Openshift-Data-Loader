@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List
-from .dal import DataLoaderDAL
-from Services.models import Record
+from dal import DataLoaderDAL
+from models import Record
 
 router = APIRouter()
 
