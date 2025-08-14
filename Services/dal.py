@@ -1,7 +1,6 @@
-import mysql.connector
 from mysql.connector.pooling import MySQLConnectionPool
 from typing import List, Optional, Dict, Any
-from Infrastructure.config import settings
+from Services.config import settings
 
 class DataLoaderDAL:
     def _init_(self) -> None:
