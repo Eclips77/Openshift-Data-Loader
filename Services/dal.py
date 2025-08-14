@@ -1,4 +1,3 @@
-import mysql.connector
 from mysql.connector.pooling import MySQLConnectionPool
 from typing import List, Optional, Dict, Any
 from Infrastructure.config import settings
