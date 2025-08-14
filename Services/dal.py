@@ -1,39 +1,46 @@
-from mysql.connector import connect, Error
-from Infrastructure import config
+import mysql.connector
+from mysql.connector.pooling import MySQLConnectionPool
+from typing import List, Optional, Dict, Any
+from Infrastructure.config import settings
 
-class SQLDAL:
-    def __init__(self):
-        self.connection = self.get_connection()
+class DataLoaderDAL:
+    def _init_(self) -> None:
+        self.pool = MySQLConnectionPool(
+            pool_name=settings.POOL_NAME,
+            pool_size=settings.POOL_SIZE,
+            host=settings.DB_HOST,
+            port=settings.DB_PORT,
+            user=settings.DB_USER,
+            password=settings.DB_PASSWORD,
+            database=settings.DB_NAME,
+            charset="utf8mb4",
+            autocommit=True
+        )
 
-    def get_connection(self):
+    def fetch_all(self) -> List[Dict[str, Any]]:
+        conn = self.pool.get_connection()
         try:
-            return connect(
-                host=config.LOCALHOST,
-                user=config.USER,
-                password=config.PASSWORD,
-                database=config.DATABASE
-            )
-        except Error as e:
-            print(f"Connection failed: {e}")
-            return None
-
-
-    def get_all_data(self) -> dict:
-        """_summary_
-
-        Returns:
-            list: list of dictionaries containing all the data in the table
-        """
-        if self.connection is None:
-            print("No database connection.")
-            return {}
-        cursor = self.connection.cursor(dictionary=True)
-        try:
-            cursor.execute(f"SELECT * FROM {config.TABLE}")
-            rows = cursor.fetchall()
+            cur = conn.cursor(dictionary=True)
+            cur.execute("SELECT ID, first_name, last_name FROM data")
+            rows = cur.fetchall()
             return rows
-        except Error as ex:
-            print(f"Error retrieving agents: {ex}")
-            return {}
         finally:
-            cursor.close()
+            try:
+                cur.close()
+            except Exception:
+                pass
+            conn.close()
+
+    def fetch_by_id(self, id_: int) -> Optional[Dict[str, Any]]:
+        conn = self.pool.get_connection()
+        try:
+            cur = conn.cursor(dictionary=True)
+            cur.execute("SELECT ID, first_name, last_name FROM data WHERE ID = %s", (id_,))
+            row = cur.fetchone()
+            return row
+        finally:
+            try:
+                cur.close()
+            except Exception:
+                pass
+            conn.close()
