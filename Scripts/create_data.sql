@@ -1,4 +1,5 @@
-CREATE TABLE IF NOT EXISTS data (
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='data' AND xtype='U')
+CREATE TABLE data (
   ID INT PRIMARY KEY,
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL
