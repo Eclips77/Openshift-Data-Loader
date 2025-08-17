@@ -1,15 +1,15 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-	name: dataloader-api
-	labels:
-		app: dataloader-api
+  name: dataloader-api
+  labels:
+    app: dataloader-api
 spec:
-	to:
-		kind: Service
-		name: dataloader-api
-	port:
-		targetPort: http
-	tls:
-		termination: edge
-		insecureEdgeTerminationPolicy: Redirect
+  to:
+    kind: Service
+    name: dataloader-api
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
