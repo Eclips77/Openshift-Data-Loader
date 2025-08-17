@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+	name: dataloader-api
+	labels:
+		app: dataloader-api
+spec:
+	selector:
+		app: dataloader-api
+	ports:
+		- name: http
+			port: 8000
+			targetPort: http
+	type: ClusterIP
+apiVersion: v1
+kind: Service
+metadata:
+	name: dataloader-api
+	labels:
+		app: dataloader-api
+spec:
+	selector:
+		app: dataloader-api
+	ports:
+		- name: http
+			port: 8000
+			targetPort: http
+	type: ClusterIP
+
